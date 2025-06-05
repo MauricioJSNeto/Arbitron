@@ -1,3 +1,4 @@
+
 // Placeholder para o serviço de auditoria
 // Em uma implementação real, este serviço interagiria com o banco de dados
 // para registrar e buscar logs de auditoria.
@@ -91,3 +92,4 @@ export const getLogs = async (
     },
   };
 };
+

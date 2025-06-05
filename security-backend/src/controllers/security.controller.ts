@@ -1,3 +1,4 @@
+
 import { Request, Response, NextFunction } from 'express';
 import * as EncryptionService from '../services/encryption.service';
 import * as AuditService from '../services/audit.service';
@@ -91,7 +92,8 @@ export const getAuditLogs = async (req: Request, res: Response, next: NextFuncti
         return res.status(403).json({ success: false, error: 'Forbidden', message: 'Viewers só podem visualizar seus próprios logs.' });
     }
 
-    const result = await AuditService.getLogs(page, limit, filters);
+    // Registrar auditoria de acesso aos logs
+    await AuditService.logAction(req.user?.id, 'get_audit_logs', { page, limit, filters });
 
     return res.status(200).json({ success: true, ...result }); // Retorna dados e paginação
 
@@ -99,3 +101,4 @@ export const getAuditLogs = async (req: Request, res: Response, next: NextFuncti
     next(error);
   }
 };
+

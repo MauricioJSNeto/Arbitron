@@ -1,3 +1,4 @@
+
 import { Request, Response, NextFunction } from 'express';
 import * as AuthService from '../services/auth.service';
 import { AuthRequest } from '@/types/contracts'; // Ajustar path se necessário
@@ -107,3 +108,4 @@ export const getProfile = async (req: Request, res: Response, next: NextFunction
   }
 };
 */
+

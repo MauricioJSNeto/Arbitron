@@ -1,3 +1,4 @@
+
 import crypto from 'crypto';
 import config from '../config';
 
@@ -52,3 +53,4 @@ export const decrypt = (encryptedTextHex: string): string => {
     throw new Error('Decryption failed. Invalid key or data integrity check failed.');
   }
 };
+

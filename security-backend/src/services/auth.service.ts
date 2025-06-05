@@ -1,3 +1,4 @@
+
 import * as UserService from "./user.service";
 import * as JwtUtils from "../utils/jwt.utils";
 import * as TwoFactorUtils from "../utils/twoFactor.utils";
@@ -178,7 +179,7 @@ export const refreshAccessToken = async (token: string): Promise<Partial<AuthRes
 
 /**
  * Valida se um usuário pode realizar uma operação crítica.
- * Placeholder - A lógica real dependerá dos requisitos específicos.
+ * Aprimorado para incluir validação de modo e limites de trade.
  * @param userId ID do usuário realizando a ação.
  * @param operationType Tipo da operação (ex: 'mode_switch', 'trade_execution', 'config_update').
  * @param operationData Dados adicionais sobre a operação.
@@ -196,33 +197,58 @@ export const validateCriticalOperation = async (
         return { allowed: false, reason: 'Usuário não encontrado.' };
     }
 
-    console.log(`[AuthService] Validando operação crítica: User=${userId}, Type=${operationType}, RequiresConfirm=${requiresConfirmation}`);
+    console.log(`[AuthService] Validando operação crítica: User=${userId}, Type=${operationType}, RequiresConfirm=${requiresConfirmation}, Data=${JSON.stringify(operationData)}`);
 
     // Lógica de validação baseada no tipo de operação e role/permissões do usuário
     switch (operationType) {
         case 'mode_switch':
-            if (operationData?.mode === 'live' && user.role !== 'admin' && user.role !== 'trader') {
-                return { allowed: false, reason: 'Permissão insuficiente para ativar modo Live.' };
+            // Somente admin ou trader podem mudar o modo
+            if (user.role !== 'admin' && user.role !== 'trader') {
+                return { allowed: false, reason: 'Permissão insuficiente para alterar o modo de operação.' };
             }
-            // Poderia exigir 2FA para mudar para Live se configurado
-            if (operationData?.mode === 'live' && user.twoFactorEnabled && requiresConfirmation) {
-                 // Em um cenário real, não validaríamos o 2FA aqui diretamente.
-                 // Indicaríamos que 2FA é necessário e o frontend faria uma chamada separada
-                 // para /auth/2fa/verify antes de prosseguir com a operação.
-                 console.warn("Validação de operação crítica: 2FA seria necessário aqui, mas não implementado neste fluxo.");
-                 // return { allowed: false, reason: 'Confirmação 2FA necessária.', requires2FA: true };
+            // Validação específica para mudar para 'live'
+            if (operationData?.mode === 'live') {
+                console.log(`[AuthService] Tentativa de mudar para modo LIVE por User=${userId}`);
+                // Exemplo: Poderia verificar se todas as configurações necessárias estão completas
+                // Exemplo: Poderia exigir 2FA para esta ação específica
+                if (user.twoFactorEnabled && requiresConfirmation) {
+                    console.warn("[AuthService] Validação de operação crítica: 2FA seria necessário para mudar para LIVE, mas não implementado neste fluxo.");
+                    // return { allowed: false, reason: 'Confirmação 2FA necessária para ativar o modo Live.', requires2FA: true };
+                }
+                // Adicionar outras verificações se necessário (ex: status das conexões das exchanges)
             }
             break;
         case 'trade_execution':
+            // Somente admin ou trader podem executar trades
             if (user.role !== 'admin' && user.role !== 'trader') {
                 return { allowed: false, reason: 'Permissão insuficiente para executar trades.' };
             }
-            // Adicionar verificações de limites de risco aqui?
+            // Exemplo: Validação de limite de trade
+            const tradeAmount = operationData?.amountUSD; // Supondo que o montante venha em operationData
+            const TRADE_LIMIT_CONFIRMATION = 1000; // Exemplo: Limite de $1000 para exigir confirmação
+            if (typeof tradeAmount === 'number' && tradeAmount > TRADE_LIMIT_CONFIRMATION) {
+                console.log(`[AuthService] Trade acima do limite ($${tradeAmount}) por User=${userId}. Confirmação necessária.`);
+                if (!requiresConfirmation) {
+                     // Se a flag de confirmação não veio do frontend, negar a operação
+                     // O frontend deveria chamar esta API primeiro para verificar se a confirmação é necessária
+                     // e então chamar novamente com requiresConfirmation=true (após o usuário confirmar na UI)
+                     // Ou, alternativamente, exigir 2FA para trades acima do limite.
+                     return { allowed: false, reason: `Confirmação obrigatória para trades acima de $${TRADE_LIMIT_CONFIRMATION}.` };
+                }
+                // Se requiresConfirmation=true, a operação pode prosseguir (assumindo que o usuário confirmou na UI)
+                // Poderia adicionar validação 2FA aqui também, se configurado.
+                 if (user.twoFactorEnabled) {
+                    console.warn("[AuthService] Validação de operação crítica: 2FA seria recomendado para trades acima do limite, mas não implementado neste fluxo.");
+                    // return { allowed: false, reason: 'Confirmação 2FA necessária para trades acima do limite.', requires2FA: true };
+                 }
+            }
+            // Adicionar outras verificações de limites de risco aqui (ex: max loss diário, etc.)
             break;
         case 'config_update':
              if (user.role !== 'admin') {
                 return { allowed: false, reason: 'Permissão insuficiente para modificar configurações.' };
             }
+            // Poderia exigir 2FA para salvar configurações críticas
             break;
         // Adicionar outros tipos de operação
         default:
@@ -233,3 +259,4 @@ export const validateCriticalOperation = async (
     // Se chegou até aqui, a operação é permitida (baseado nesta lógica simples)
     return { allowed: true };
 };
+
