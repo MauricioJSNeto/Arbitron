@@ -1,4 +1,3 @@
-
 import speakeasy from 'speakeasy';
 
 /**
@@ -33,4 +32,3 @@ export const verifyTwoFactorCode = (secretBase32: string, userToken: string): bo
     return false;
   }
 };
-

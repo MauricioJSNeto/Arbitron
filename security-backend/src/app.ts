@@ -1,4 +1,3 @@
-
 import express, { Express, Request, Response, NextFunction } from 'express';
 import cors from 'cors';
 import config from './config';
@@ -58,4 +57,3 @@ if (require.main === module) {
 }
 
 export { app, startServer }; // Exporta para testes ou outros usos
-

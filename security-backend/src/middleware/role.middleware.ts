@@ -1,4 +1,3 @@
-
 import { Request, Response, NextFunction } from 'express';
 import { UserProfile } from '@/types/contracts'; // Importando do local correto (ajustar se necessário)
 
@@ -32,4 +31,3 @@ export const checkRole = (allowedRoles: Array<UserProfile['role']>) => {
     }
   };
 };
-

@@ -1,4 +1,3 @@
-
 {
   "compilerOptions": {
     "target": "ES2016",                     /* Set the JavaScript language version for emitted JavaScript and include compatible library declarations. */
@@ -22,4 +21,3 @@
   "include": ["src/**/*"],                 /* Specifies an array of filenames or patterns to include in the program. */
   "exclude": ["node_modules", "**/*.spec.ts"] /* Specifies an array of filenames or patterns that should be skipped when resolving 'include'. */
 }
-

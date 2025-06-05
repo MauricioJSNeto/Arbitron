@@ -1,4 +1,3 @@
-
 import dotenv from 'dotenv';
 import path from 'path';
 
@@ -52,4 +51,3 @@ const config: Config = {
 };
 
 export default config;
-

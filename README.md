@@ -24,7 +24,7 @@ O bot monitora preços em tempo real, calcula lucros potenciais considerando tax
 
 ## Estrutura do Projeto
 
-```plaintext
+\`\`\`plaintext
 Cripto-bot-arbitragem/
 ├── Dockerfile
 ├── docker-compose.yml
@@ -40,7 +40,7 @@ Cripto-bot-arbitragem/
 │   ├── models.py                 # Modelos Pydantic para validação
 ├── config/
 │   ├── settings.yaml             # Configurações do bot
-```
+\`\`\`
 
 ## Pré-requisitos
 
@@ -52,19 +52,19 @@ Cripto-bot-arbitragem/
 ## Instalação
 
 1. **Clone o repositório**:
-   ```bash
+   \`\`\`bash
    git clone https://github.com/MauricioJSNeto/Cripto-bot-arbitragem.git
    cd Cripto-bot-arbitragem
-   ```
+   \`\`\`
 
 2. **Configure as variáveis de ambiente** (se necessário):
    - Edite `config/settings.yaml` para definir pares, exchanges, e conexões com Redis/PostgreSQL.
    - Para chaves API, configure-as de forma segura (futuramente via HashiCorp Vault ou variáveis de ambiente).
 
 3. **Construa e inicie os contêineres**:
-   ```bash
+   \`\`\`bash
    docker-compose up --build
-   ```
+   \`\`\`
    - Isso inicia o bot, Redis, e PostgreSQL.
    - A API estará disponível em `http://localhost:8000`.
 
@@ -76,23 +76,23 @@ Cripto-bot-arbitragem/
 ### Executando o Bot
 - O bot inicia automaticamente com `docker-compose up`.
 - Para parar, use `Ctrl+C` ou:
-  ```bash
+  \`\`\`bash
   docker-compose down
-  ```
+  \`\`\`
 
 ### Testando a API
 - **Escanear arbitragem simples**:
-  ```bash
+  \`\`\`bash
   curl -X POST "http://localhost:8000/api/v1/arbitrage/scan" \
        -H "Content-Type: application/json" \
        -d '{"pair": "BTC/USDT", "exchanges": ["binance", "kraken"], "min_profit": 0.5}'
-  ```
+  \`\`\`
 - **Escanear arbitragem triangular**:
-  ```bash
+  \`\`\`bash
   curl -X POST "http://localhost:8000/api/v1/arbitrage/scan_triangular" \
        -H "Content-Type: application/json" \
        -d '{"exchange": "binance"}'
-  ```
+  \`\`\`
 
 ### Configurações
 Edite `config/settings.yaml` para ajustar:
@@ -110,20 +110,20 @@ Edite `config/settings.yaml` para ajustar:
 
 ### Executando Localmente (Sem Docker)
 1. Instale dependências:
-   ```bash
+   \`\`\`bash
    pip install -r requirements.txt
-   ```
+   \`\`\`
 2. Inicie a API:
-   ```bash
+   \`\`\`bash
    uvicorn api.main:app --host 0.0.0.0 --port 8000
-   ```
+   \`\`\`
 
 ### Testes
 - Adicione testes unitários em um diretório `tests/` (futuro).
 - Execute com:
-  ```bash
+  \`\`\`bash
   pytest
-  ```
+  \`\`\`
 
 ## Segurança
 - **Chaves API**: Configure-as com permissões mínimas (leitura/negociação, sem saques).

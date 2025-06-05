@@ -1,4 +1,3 @@
-
 // Placeholder para o serviço de usuário
 // Em uma implementação real, este serviço interagiria com o banco de dados
 // para buscar e gerenciar informações do usuário.
@@ -146,4 +145,3 @@ export const findUserByRefreshToken = async (refreshToken: string): Promise<any 
     console.log(`[UserService] Usuário não encontrado por refresh token.`);
     return null;
 };
-

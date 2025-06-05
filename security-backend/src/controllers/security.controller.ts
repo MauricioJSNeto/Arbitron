@@ -1,4 +1,3 @@
-
 import { Request, Response, NextFunction } from 'express';
 import * as EncryptionService from '../services/encryption.service';
 import * as AuditService from '../services/audit.service';
@@ -100,4 +99,3 @@ export const getAuditLogs = async (req: Request, res: Response, next: NextFuncti
     next(error);
   }
 };
-

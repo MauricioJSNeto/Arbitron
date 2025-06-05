@@ -1,4 +1,3 @@
-
 import { Router } from 'express';
 import * as AuthController from '../controllers/auth.controller';
 import { authenticateToken } from '../middleware/auth.middleware'; // Middleware para proteger rotas
@@ -26,4 +25,3 @@ router.post('/refresh', AuthController.refreshToken);
 // router.get('/profile', authenticateToken, AuthController.getProfile);
 
 export default router;
-
