@@ -1,0 +1,25 @@
+version: '3.8'
+services:
+  arbitrage_bot:
+    build: .
+    ports:
+      - "8000:8000"  # Porta para FastAPI
+      - "8081:8081"  # Porta para WebSocket (se necessário)
+    environment:
+      - REDIS_URL=redis://redis:6379
+      - POSTGRES_URL=postgresql://user:pass@postgres:5432/db
+    depends_on:
+      - redis
+      - postgres
+  redis:
+    image: redis:6
+    ports:
+      - "6379:6379"
+  postgres:
+    image: postgres:13
+    environment:
+      - POSTGRES_USER=user
+      - POSTGRES_PASSWORD=pass
+      - POSTGRES_DB=db
+    ports:
+      - "5432:5432"
