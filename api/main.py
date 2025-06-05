@@ -15,7 +15,7 @@ from api.models import ArbitrageRequest, ArbitrageOpportunity, TriangularArbitra
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
 logger = logging.getLogger(__name__)
 
-app = FastAPI(title="Bot de Arbitragem de Criptomoedas")
+app = FastAPI(title="Arbitron - Bot de Arbitragem de Criptomoedas")
 
 # Estado global do bot
 class BotState:
