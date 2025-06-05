@@ -3,8 +3,8 @@ services:
   arbitrage_bot:
     build: .
     ports:
-      - "8000:8000"  # Porta para FastAPI
-      - "8081:8081"  # Porta para WebSocket (se necessário)
+      - "8000:8000"
+      - "8081:8081"
     environment:
       - REDIS_URL=redis://redis:6379
       - POSTGRES_URL=postgresql://user:pass@postgres:5432/db

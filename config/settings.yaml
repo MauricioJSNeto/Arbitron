@@ -1,0 +1,16 @@
+arbitrage:
+  min_profit: 0.5
+  pairs:
+    - BTC/USDT
+    - ETH/USDT
+  exchanges:
+    - binance
+    - kraken
+    - coinbase
+    - kucoin
+    - bybit
+    - okx
+database:
+  url: postgresql://user:pass@postgres:5432/db
+redis:
+  url: redis://redis:6379
