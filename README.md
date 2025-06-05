@@ -1,4 +1,4 @@
-# Cripto Bot Arbitragem
+# Arbitron
 
 Bem-vindo ao **Cripto Bot Arbitragem**, um bot avançado de arbitragem de criptomoedas projetado para identificar e executar oportunidades lucrativas em exchanges centralizadas (CEX) e descentralizadas (DEX). Este projeto implementa um motor de arbitragem robusto, com suporte a estratégias simples e triangulares, integração com APIs de exchanges via CCXT, e uma API RESTful para monitoramento e controle.
 
