@@ -1,30 +1,154 @@
-# Crie bot com arquivo
+# Cripto Bot Arbitragem
 
-*Automatically synced with your [v0.dev](https://v0.dev) deployments*
+Bem-vindo ao **Cripto Bot Arbitragem**, um bot avançado de arbitragem de criptomoedas projetado para identificar e executar oportunidades lucrativas em exchanges centralizadas (CEX) e descentralizadas (DEX). Este projeto implementa um motor de arbitragem robusto, com suporte a estratégias simples e triangulares, integração com APIs de exchanges via CCXT, e uma API RESTful para monitoramento e controle.
 
-[![Deployed on Vercel](https://img.shields.io/badge/Deployed%20on-Vercel-black?style=for-the-badge&logo=vercel)](https://vercel.com/mauriciojsnetos-projects/v0-crie-bot-com-arquivo)
-[![Built with v0](https://img.shields.io/badge/Built%20with-v0.dev-black?style=for-the-badge)](https://v0.dev/chat/projects/E8hVooOp0yV)
+## Visão Geral
 
-## Overview
+O bot monitora preços em tempo real, calcula lucros potenciais considerando taxas, e executa trades automaticamente (em modo real ou simulado). Ele é projetado para baixa latência, segurança e extensibilidade, com uma arquitetura modular que suporta CEXs (Binance, Kraken, etc.), DEXs (Uniswap, PancakeSwap, etc.), e futuramente arbitragem cross-chain.
 
-This repository will stay in sync with your deployed chats on [v0.dev](https://v0.dev).
-Any changes you make to your deployed app will be automatically pushed to this repository from [v0.dev](https://v0.dev).
+### Funcionalidades
+- **Arbitragem Simples**: Detecta oportunidades entre exchanges para o mesmo par (e.g., BTC/USDT).
+- **Arbitragem Triangular**: Identifica lucros dentro de uma exchange usando três pares (e.g., BTC/ETH, ETH/USDT, USDT/BTC).
+- **Integração com CCXT**: Conexão com múltiplas CEXs para dados de mercado em tempo real.
+- **API RESTful**: Endpoints para escanear oportunidades (`/api/v1/arbitrage/scan`, `/api/v1/arbitrage/scan_triangular`).
+- **Gerenciamento de Risco**: Configuração de limiar mínimo de lucro e taxas de exchanges.
+- **Containerização**: Suporte a Docker e Docker Compose para implantação.
+- **Logging**: Registro detalhado de operações e erros.
 
-## Deployment
+### Tecnologias
+- **Linguagem**: Python 3.9
+- **Bibliotecas**: FastAPI, CCXT, Pydantic, Redis, Psycopg2
+- **Containerização**: Docker, Docker Compose
+- **Banco de Dados**: PostgreSQL (persistência), Redis (cache)
+- **Configuração**: YAML
 
-Your project is live at:
+## Estrutura do Projeto
 
-**[https://vercel.com/mauriciojsnetos-projects/v0-crie-bot-com-arquivo](https://vercel.com/mauriciojsnetos-projects/v0-crie-bot-com-arquivo)**
+```plaintext
+Cripto-bot-arbitragem/
+├── Dockerfile
+├── docker-compose.yml
+├── requirements.txt
+├── scripts/
+│   ├── arbitrage_engine.py        # Lógica principal de arbitragem
+│   ├── connectors/
+│   │   ├── cex.py                # Conector para exchanges CEX
+│   ├── execution/
+│   │   ├── engine.py             # Motor de execução de trades
+├── api/
+│   ├── main.py                   # Aplicação FastAPI
+│   ├── models.py                 # Modelos Pydantic para validação
+├── config/
+│   ├── settings.yaml             # Configurações do bot
+```
 
-## Build your app
+## Pré-requisitos
 
-Continue building your app on:
+- **Docker** e **Docker Compose** instalados
+- Python 3.9 (opcional, se rodar localmente sem Docker)
+- Chaves API de exchanges (opcional, para execução real)
+- Git instalado para clonar o repositório
 
-**[https://v0.dev/chat/projects/E8hVooOp0yV](https://v0.dev/chat/projects/E8hVooOp0yV)**
+## Instalação
 
-## How It Works
+1. **Clone o repositório**:
+   ```bash
+   git clone https://github.com/MauricioJSNeto/Cripto-bot-arbitragem.git
+   cd Cripto-bot-arbitragem
+   ```
 
-1. Create and modify your project using [v0.dev](https://v0.dev)
-2. Deploy your chats from the v0 interface
-3. Changes are automatically pushed to this repository
-4. Vercel deploys the latest version from this repository
+2. **Configure as variáveis de ambiente** (se necessário):
+   - Edite `config/settings.yaml` para definir pares, exchanges, e conexões com Redis/PostgreSQL.
+   - Para chaves API, configure-as de forma segura (futuramente via HashiCorp Vault ou variáveis de ambiente).
+
+3. **Construa e inicie os contêineres**:
+   ```bash
+   docker-compose up --build
+   ```
+   - Isso inicia o bot, Redis, e PostgreSQL.
+   - A API estará disponível em `http://localhost:8000`.
+
+4. **Acesse a documentação da API**:
+   - Abra `http://localhost:8000/docs` no navegador para testar os endpoints.
+
+## Uso
+
+### Executando o Bot
+- O bot inicia automaticamente com `docker-compose up`.
+- Para parar, use `Ctrl+C` ou:
+  ```bash
+  docker-compose down
+  ```
+
+### Testando a API
+- **Escanear arbitragem simples**:
+  ```bash
+  curl -X POST "http://localhost:8000/api/v1/arbitrage/scan" \
+       -H "Content-Type: application/json" \
+       -d '{"pair": "BTC/USDT", "exchanges": ["binance", "kraken"], "min_profit": 0.5}'
+  ```
+- **Escanear arbitragem triangular**:
+  ```bash
+  curl -X POST "http://localhost:8000/api/v1/arbitrage/scan_triangular" \
+       -H "Content-Type: application/json" \
+       -d '{"exchange": "binance"}'
+  ```
+
+### Configurações
+Edite `config/settings.yaml` para ajustar:
+- `min_profit`: Limiar mínimo de lucro (em %).
+- `pairs`: Pares de moedas a monitorar (e.g., BTC/USDT, ETH/USDT).
+- `exchanges`: Exchanges a usar (e.g., binance, kraken).
+- Conexões com banco de dados e Redis.
+
+## Desenvolvimento
+
+### Adicionando Novas Funcionalidades
+- **Novas Exchanges**: Atualize `scripts/connectors/cex.py` para suportar novas CEXs via CCXT.
+- **Arbitragem Cross-Chain**: Implemente em `scripts/arbitrage_engine.py` usando Web3.py e APIs de pontes.
+- **WebSocket**: Adicione suporte em `scripts/connectors/cex.py` para streams de dados em tempo real.
+
+### Executando Localmente (Sem Docker)
+1. Instale dependências:
+   ```bash
+   pip install -r requirements.txt
+   ```
+2. Inicie a API:
+   ```bash
+   uvicorn api.main:app --host 0.0.0.0 --port 8000
+   ```
+
+### Testes
+- Adicione testes unitários em um diretório `tests/` (futuro).
+- Execute com:
+  ```bash
+  pytest
+  ```
+
+## Segurança
+- **Chaves API**: Configure-as com permissões mínimas (leitura/negociação, sem saques).
+- **Segredos**: Use um gerenciador de segredos (e.g., HashiCorp Vault) em produção.
+- **Logs**: Evite registrar informações sensíveis.
+- **2FA**: Planeje integrar autenticação de dois fatores no painel web (futuro).
+
+## Roadmap
+- [ ] Suporte a DEXs (Uniswap, PancakeSwap) via Web3.py
+- [ ] Arbitragem cross-chain com pontes
+- [ ] Servidor WebSocket para dados em tempo real
+- [ ] Painel web com React para monitoramento
+- [ ] Integração com IA/ML para ranking de oportunidades
+- [ ] Backtesting com dados históricos
+
+## Contribuição
+Contribuições são bem-vindas! Siga estas etapas:
+1. Fork o repositório.
+2. Crie uma branch (`git checkout -b feature/nova-funcionalidade`).
+3. Commit suas mudanças (`git commit -m "Adiciona nova funcionalidade"`).
+4. Push para a branch (`git push origin feature/nova-funcionalidade`).
+5. Abra um Pull Request.
+
+## Licença
+Este projeto está licenciado sob a [MIT License](LICENSE).
+
+## Contato
+Para dúvidas ou sugestões, contate [MauricioJSNeto](https://github.com/MauricioJSNeto).
