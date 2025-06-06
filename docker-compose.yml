@@ -10,11 +10,11 @@ services:
       - "3000:3000"
     environment:
       - NEXT_PUBLIC_API_URL=http://security-backend:3001
-      - NEXT_PUBLIC_ARBITRAGE_API_URL=http://arbitrage-engine:8000
-      - NEXT_PUBLIC_WS_URL=ws://arbitrage-engine:8000/ws
+      - NEXT_PUBLIC_ARBITRAGE_API_URL=http://arbitron:8000
+      - NEXT_PUBLIC_WS_URL=ws://arbitron:8000/ws
     depends_on:
       - security-backend
-      - arbitrage-engine
+      - arbitron
     networks:
       - crypto-bot-network
 
@@ -37,8 +37,8 @@ services:
     networks:
       - crypto-bot-network
 
-  # Arbitrage Engine (Grok-3)
-  arbitrage-engine:
+  # Arbitron (Motor de Arbitragem)
+  arbitron:
     build: 
       context: .
       dockerfile: Dockerfile
@@ -92,7 +92,7 @@ services:
     depends_on:
       - frontend
       - security-backend
-      - arbitrage-engine
+      - arbitron
     networks:
       - crypto-bot-network
 
