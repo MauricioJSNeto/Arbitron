@@ -1,4 +1,3 @@
-
 import { Request, Response, NextFunction } from 'express';
 import jwt from 'jsonwebtoken';
 import config from '../config';
@@ -45,4 +44,3 @@ export const authenticateToken = (req: Request, res: Response, next: NextFunctio
     next(); // Passa para o próximo middleware ou rota
   });
 };
-

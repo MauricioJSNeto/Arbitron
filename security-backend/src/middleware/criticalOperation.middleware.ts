@@ -1,4 +1,3 @@
-
 import { Request, Response, NextFunction } from 'express';
 import * as AuditService from '../services/audit.service'; // For logging failed attempts
 
@@ -66,4 +65,3 @@ export const validateCriticalOperationInput = (req: Request, res: Response, next
     // Input seems valid for this middleware, proceed to controller/service validation
     next();
 };
-

@@ -1,4 +1,3 @@
-
 import jwt from 'jsonwebtoken';
 import config from '../config';
 
@@ -31,4 +30,3 @@ export const verifyRefreshToken = (token: string): any | null => {
     return null;
   }
 };
-

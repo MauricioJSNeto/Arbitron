@@ -1,4 +1,3 @@
-
 import { Router } from 'express';
 import authRoutes from './auth.routes';
 import securityRoutes from './security.routes';
@@ -16,4 +15,3 @@ router.use('/security', securityRoutes);
 router.use('/alerts', alertRoutes);
 
 export default router;
-

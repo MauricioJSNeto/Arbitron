@@ -1,4 +1,3 @@
-
 // Placeholder para o serviço de Alertas
 // Em uma implementação real, este serviço interagiria com o banco de dados
 // para registrar e buscar alertas.
@@ -118,4 +117,3 @@ export const markAlertAsRead = async (userId: string, alertId: string): Promise<
     return false;
   }
 };
-

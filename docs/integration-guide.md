@@ -1,4 +1,4 @@
-# Guia de Integração - Bot de Arbitragem de Criptomoedas
+# Guia de Integração - Arbitron
 
 ## Visão Geral da Arquitetura
 

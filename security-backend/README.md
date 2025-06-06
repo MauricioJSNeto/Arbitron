@@ -1,7 +1,6 @@
+# Arbitron Security Backend - README
 
-# Security Backend - README
-
-Este diretório contém o código-fonte para a camada de segurança do Bot de Arbitragem de Criptomoedas, implementada em Node.js com TypeScript e Express.js.
+Este diretório contém o código-fonte para a camada de segurança do Arbitron, implementada em Node.js com TypeScript e Express.js.
 
 ## Funcionalidades Principais
 
@@ -40,32 +39,32 @@ Consulte `security_backend_structure.md` para uma visão geral da organização 
 ## Instalação e Execução
 
 1.  **Instalar Dependências:**
-    ```bash
+    \`\`\`bash
     npm install
     # ou
     yarn install
-    ```
+    \`\`\`
 
 2.  **Compilar TypeScript:**
-    ```bash
+    \`\`\`bash
     npm run build
     # ou
     yarn build
-    ```
+    \`\`\`
 
 3.  **Executar em Produção:**
-    ```bash
+    \`\`\`bash
     npm start
     # ou
     yarn start
-    ```
+    \`\`\`
 
 4.  **Executar em Desenvolvimento (com hot-reload):**
-    ```bash
+    \`\`\`bash
     npm run dev
     # ou
     yarn dev
-    ```
+    \`\`\`
 
 ## Documentação da API
 
@@ -89,4 +88,3 @@ Consulte `API_DOCUMENTATION.md` para detalhes sobre os endpoints disponíveis, f
 7.  Escrever testes unitários e de integração.
 8.  Configurar HTTPS em produção.
 9.  Revisar e ajustar as configurações de CORS para produção.
-

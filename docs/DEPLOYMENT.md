@@ -4,8 +4,8 @@
 
 1. **Clone the repository**
    \`\`\`bash
-   git clone https://github.com/MauricioJSNeto/Cripto-bot-arbitragem.git
-   cd Cripto-bot-arbitragem
+   git clone https://github.com/MauricioJSNeto/Arbitron.git
+   cd Arbitron
    \`\`\`
 
 2. **Run setup script**

@@ -1,6 +1,6 @@
-# Camada de Segurança - Documentação da API v2
+# Arbitron Security Layer - API Documentation
 
-Este documento descreve as APIs implementadas e atualizadas na camada de segurança do Bot de Arbitragem de Criptomoedas, incluindo Autenticação, Segurança, Alertas e melhorias de Auditoria/Validação.
+Este documento descreve as APIs implementadas na camada de segurança do Arbitron, incluindo Autenticação, Segurança, Alertas e melhorias de Auditoria/Validação.
 
 **URL Base da API:** `/api/v1`
 
@@ -98,7 +98,7 @@ Este documento descreve as APIs implementadas e atualizadas na camada de seguran
     *   `limit` (number, default: 20)
     *   `read` (boolean, `true` ou `false`): Filtrar por status de leitura (omitir para buscar todos).
 *   **Success Response (200 OK):** `PaginatedResponse<Alert>`
-    ```json
+    \`\`\`json
     {
       "success": true,
       "data": [ Alert ], // Array de alertas da página
@@ -106,7 +106,7 @@ Este documento descreve as APIs implementadas e atualizadas na camada de seguran
       "timestamp": "string",
       "requestId": "string"
     }
-    ```
+    \`\`\`
 *   **Error Responses:** `401 Unauthorized`, `500 Internal Server Error`.
 
 ### 3.2. Criar Novo Alerta
@@ -115,21 +115,21 @@ Este documento descreve as APIs implementadas e atualizadas na camada de seguran
 *   **Descrição:** Cria um novo alerta para o usuário autenticado. (Nota: Geralmente usado internamente por outros serviços, mas a API está disponível).
 *   **Autorização:** Usuário autenticado.
 *   **Request Body:**
-    ```json
+    \`\`\`json
     {
       "type": "string", // AlertType (ex: 'info', 'warning', 'trade_executed')
       "title": "string",
       "message": "string",
       "metadata": "object" // Opcional
     }
-    ```
+    \`\`\`
 *   **Success Response (201 Created):**
-    ```json
+    \`\`\`json
     {
       "success": true,
       "data": Alert // O alerta criado
     }
-    ```
+    \`\`\`
 *   **Auditoria:** Registra a ação `create_alert`.
 *   **Error Responses:** `400 Bad Request`, `401 Unauthorized`, `500 Internal Server Error`.
 
@@ -140,12 +140,12 @@ Este documento descreve as APIs implementadas e atualizadas na camada de seguran
 *   **Autorização:** Usuário autenticado.
 *   **Path Parameter:** `:id` - O ID do alerta a ser marcado.
 *   **Success Response (200 OK):**
-    ```json
+    \`\`\`json
     {
       "success": true,
       "message": "Alert marked as read."
     }
-    ```
+    \`\`\`
 *   **Auditoria:** Registra a ação `mark_alert_read` (ou `mark_alert_read_fail`).
 *   **Error Responses:** `401 Unauthorized`, `404 Not Found` (alerta não existe ou não pertence ao usuário), `500 Internal Server Error`.
 
@@ -157,4 +157,3 @@ Este documento descreve as APIs implementadas e atualizadas na camada de seguran
 *   **Validação de Operações:** A função `validateCriticalOperation` no `AuthService` foi aprimorada para verificar explicitamente a mudança para modo `live` e trades acima de um limite (`$1000` no exemplo), exigindo confirmação.
 *   **Middleware de Validação:** Um novo middleware (`validateCriticalOperationInput`) foi adicionado à rota `POST /security/validate-operation` para garantir que flags como `requiresConfirmation` sejam enviadas corretamente pelo frontend em cenários específicos (ex: trades acima do limite).
 *   **Rate Limiting:** Middlewares de rate limiting foram adicionados às rotas `/auth` e a endpoints sensíveis em `/security` para mitigar abuso.
-

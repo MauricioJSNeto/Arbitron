@@ -1,7 +1,7 @@
-'''{
-  "name": "security-backend",
+{
+  "name": "arbitron-security-backend",
   "version": "1.0.0",
-  "description": "Security layer for the Crypto Arbitrage Bot",
+  "description": "Security layer for Arbitron - Advanced Cryptocurrency Arbitrage Bot",
   "main": "dist/app.js",
   "scripts": {
     "build": "tsc",
@@ -9,13 +9,7 @@
     "dev": "ts-node-dev --respawn --transpile-only src/app.ts",
     "test": "jest"
   },
-  "keywords": [
-    "security",
-    "crypto",
-    "arbitrage",
-    "bot",
-    "backend"
-  ],
+  "keywords": ["security", "crypto", "arbitrage", "bot", "backend"],
   "author": "Manus AI",
   "license": "ISC",
   "dependencies": {
@@ -24,8 +18,8 @@
     "dotenv": "^16.4.5",
     "express": "^4.19.2",
     "jsonwebtoken": "^9.0.2",
-    "speakeasy": "^2.0.0", 
-    "uuid": "^10.0.0" 
+    "speakeasy": "^2.0.0",
+    "uuid": "^10.0.0"
   },
   "devDependencies": {
     "@types/bcrypt": "^5.0.2",
@@ -42,4 +36,3 @@
     "typescript": "^5.4.5"
   }
 }
-'''

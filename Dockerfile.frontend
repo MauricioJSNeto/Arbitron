@@ -1,5 +1,10 @@
 FROM node:18-alpine
 
+# Metadados do container
+LABEL maintainer="MauricioJSNeto"
+LABEL description="Arbitron Frontend - Advanced Cryptocurrency Arbitrage Bot Dashboard"
+LABEL version="1.0.0"
+
 WORKDIR /app
 
 # Copy package files

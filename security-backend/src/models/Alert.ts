@@ -1,4 +1,3 @@
-
 // Placeholder for Alert model definition
 // In a real application, this would likely be a Sequelize, TypeORM, or Prisma model
 // interacting with the database.
@@ -32,4 +31,3 @@ export const findAlertById_DB = async (id: string): Promise<Alert | null> => {
   // In real app: return await AlertModel.findByPk(id);
   return null;
 };
-

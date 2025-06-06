@@ -1,4 +1,3 @@
-
 import { Request, Response, NextFunction } from 'express';
 
 // Simples armazenamento em memória para rate limiting (NÃO adequado para produção distribuída)
@@ -80,4 +79,3 @@ setInterval(() => {
     });
     // console.log('[RateLimiter] Limpeza de registros antigos concluída.');
 }, 60 * 60 * 1000); // Executa a cada hora
-

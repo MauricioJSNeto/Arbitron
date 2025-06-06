@@ -1,4 +1,3 @@
-
 import { Router } from 'express';
 import * as SecurityController from '../controllers/security.controller';
 import { authenticateToken } from '../middleware/auth.middleware'; // Middleware JWT
@@ -43,4 +42,3 @@ router.post(
 router.get('/audit-logs', checkRole(['admin', 'viewer']), SecurityController.getAuditLogs);
 
 export default router;
-

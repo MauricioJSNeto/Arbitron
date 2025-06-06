@@ -1,4 +1,3 @@
-
 import * as UserService from "./user.service";
 import * as JwtUtils from "../utils/jwt.utils";
 import * as TwoFactorUtils from "../utils/twoFactor.utils";
@@ -259,4 +258,3 @@ export const validateCriticalOperation = async (
     // Se chegou até aqui, a operação é permitida (baseado nesta lógica simples)
     return { allowed: true };
 };
-

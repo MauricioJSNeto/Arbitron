@@ -1,6 +1,6 @@
 # Arbitron
 
-Bem-vindo ao **Cripto Bot Arbitragem**, um bot avançado de arbitragem de criptomoedas projetado para identificar e executar oportunidades lucrativas em exchanges centralizadas (CEX) e descentralizadas (DEX). Este projeto implementa um motor de arbitragem robusto, com suporte a estratégias simples e triangulares, integração com APIs de exchanges via CCXT, e uma API RESTful para monitoramento e controle.
+Bem-vindo ao **Arbitron**, um bot avançado de arbitragem de criptomoedas projetado para identificar e executar oportunidades lucrativas em exchanges centralizadas (CEX) e descentralizadas (DEX). Este projeto implementa um motor de arbitragem robusto, com suporte a estratégias simples e triangulares, integração com APIs de exchanges via CCXT, e uma API RESTful para monitoramento e controle.
 
 ## Visão Geral
 
@@ -53,8 +53,8 @@ Cripto-bot-arbitragem/
 
 1. **Clone o repositório**:
    \`\`\`bash
-   git clone https://github.com/MauricioJSNeto/Cripto-bot-arbitragem.git
-   cd Cripto-bot-arbitragem
+   git clone https://github.com/MauricioJSNeto/Arbitron.git
+   cd Arbitron
    \`\`\`
 
 2. **Configure as variáveis de ambiente** (se necessário):

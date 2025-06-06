@@ -1,3 +1,8 @@
+project:
+  name: "Arbitron"
+  version: "1.0.0"
+  description: "Advanced Cryptocurrency Arbitrage Bot"
+
 arbitrage:
   min_profit: 0.5
   pairs:
@@ -11,6 +16,6 @@ arbitrage:
     - bybit
     - okx
 database:
-  url: postgresql://user:pass@postgres:5432/db
+  url: postgresql://user:pass@postgres:5432/arbitron_db
 redis:
   url: redis://redis:6379

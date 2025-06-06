@@ -1,4 +1,3 @@
-
 // Placeholder for AuditLog model definition
 // In a real application, this would likely be a Sequelize, TypeORM, or Prisma model
 // interacting with the database.
@@ -21,4 +20,3 @@ export const createAuditLog_DB = async (logData: Omit<AuditLog, 'id'>): Promise<
   // In real app: return await AuditLogModel.create(logData);
   return newLog;
 };
-

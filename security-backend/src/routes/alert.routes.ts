@@ -1,4 +1,3 @@
-
 import { Router } from 'express';
 import * as AlertController from '../controllers/alert.controller';
 import { authenticateToken } from '../middleware/auth.middleware'; // Middleware JWT
@@ -21,4 +20,3 @@ router.post('/', AlertController.createAlert);
 router.put('/:id/read', AlertController.markAsRead);
 
 export default router;
-

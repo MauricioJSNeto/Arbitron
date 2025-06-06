@@ -1,4 +1,3 @@
-
 import { Request, Response, NextFunction } from 'express';
 import * as AlertService from '../services/alert.service';
 import * as AuditService from '../services/audit.service';
@@ -95,4 +94,3 @@ export const markAsRead = async (req: Request, res: Response, next: NextFunction
     next(error);
   }
 };
-
