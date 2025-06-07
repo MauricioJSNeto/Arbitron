@@ -43,7 +43,7 @@ export function RecentTrades() {
       case "failed":
         return <Badge variant="destructive">Failed</Badge>
       case "partial":
-        return <Badge variant="warning">Partial</Badge>
+        return <Badge variant="secondary">Partial</Badge>
       default:
         return <Badge variant="outline">{status}</Badge>
     }

@@ -1,238 +1,241 @@
-// Contratos de API para integração entre as três camadas
-// Define interfaces padronizadas para comunicação entre Frontend, Backend e Segurança
+// Contratos de API padronizados para comunicação entre camadas
+// Define tipos, interfaces e estruturas de dados compartilhadas
 
 // ============================================================================
-// CONTRATOS DE AUTENTICAÇÃO E SEGURANÇA (Manus AI Layer)
+// TIPOS BASE
+// ============================================================================
+
+export interface APIResponse<T = any> {
+  success: boolean
+  data?: T
+  error?: string
+  message?: string
+  timestamp: string
+}
+
+export interface PaginatedResponse<T> extends APIResponse<T[]> {
+  pagination: {
+    page: number
+    limit: number
+    total: number
+    totalPages: number
+  }
+}
+
+export interface FilterOptions {
+  page?: number
+  limit?: number
+  startDate?: string
+  endDate?: string
+  status?: string
+  exchange?: string
+  pair?: string
+  [key: string]: any
+}
+
+// ============================================================================
+// AUTENTICAÇÃO
 // ============================================================================
 
 export interface AuthRequest {
-  username: string
+  email: string
   password: string
   twoFactorCode?: string
 }
 
 export interface AuthResponse {
-  success: boolean
-  token?: string
+  token: string
   refreshToken?: string
-  user?: UserProfile
-  requiresTwoFactor?: boolean
-  error?: string
-}
-
-export interface UserProfile {
-  id: string
-  username: string
-  email: string
-  role: "admin" | "trader" | "viewer"
-  twoFactorEnabled: boolean
-  lastLogin: string
-  permissions: string[]
-}
-
-export interface SecureCredentials {
-  id: string
-  exchangeId: string
-  encryptedApiKey: string
-  encryptedApiSecret: string
-  encryptedPassphrase?: string
-  permissions: string[]
-  isActive: boolean
-  lastValidated: string
-  createdAt: string
+  user: {
+    id: string
+    email: string
+    role: string
+    permissions: string[]
+  }
+  expiresIn: number
 }
 
 // ============================================================================
-// CONTRATOS DO MOTOR DE ARBITRAGEM (User Layer)
+// ARBITRAGEM
 // ============================================================================
+
+export interface ArbitrageOpportunity {
+  id: string
+  pair: string
+  buyExchange: string
+  sellExchange: string
+  buyPrice: number
+  sellPrice: number
+  spreadPercentage: number
+  estimatedProfit: number
+  timestamp: string
+  type: "simple" | "triangular" | "cross-chain"
+  volume?: number
+  confidence?: number
+}
 
 export interface ArbitrageEngineConfig {
-  minProfitThreshold: number // %
-  maxTradeAmount: number // USD
-  maxDailyLoss: number // USD
-  slippageTolerance: number // %
+  enabled: boolean
+  minProfitThreshold: number
+  maxTradeAmount: number
   enabledExchanges: string[]
-  monitoredPairs: string[]
-  arbitrageTypes: ("simple" | "triangular" | "cross-chain")[]
-  riskLimits: RiskLimits
-}
-
-export interface RiskLimits {
-  maxPositionSize: number
-  maxDailyTrades: number
-  stopLossPercentage: number
-  maxConcurrentTrades: number
-  blacklistedTokens: string[]
-  whitelistedTokens: string[]
+  enabledPairs: string[]
+  riskSettings: {
+    maxSlippage: number
+    maxLatency: number
+    minLiquidity: number
+  }
 }
 
 export interface OpportunityDetectionRequest {
   pairs: string[]
   exchanges: string[]
-  minProfit: number
-  maxSlippage: number
-}
-
-export interface ArbitrageOpportunity {
-  id: string
-  type: "simple" | "triangular" | "cross-chain"
-  exchanges: string[]
-  pairs: string[]
-  profit: number
-  volume: number
-  timestamp: string
-  details: any
+  minProfit?: number
+  maxLatency?: number
 }
 
 export interface OpportunityDetectionResponse {
   opportunities: ArbitrageOpportunity[]
   scanTime: number
   exchangesScanned: string[]
-  totalPairsAnalyzed: number
+  pairsScanned: string[]
 }
+
+// ============================================================================
+// EXECUÇÃO
+// ============================================================================
 
 export interface ExecutionRequest {
   opportunityId: string
-  mode: "simulation" | "live"
-  userConfirmation: boolean
-  riskOverride?: boolean
+  amount: number
+  slippageTolerance: number
+  dryRun?: boolean
 }
 
 export interface ExecutionResponse {
-  success: boolean
-  executionId: string
-  orders: OrderResult[]
-  estimatedProfit: number
+  id: string
+  opportunityId: string
+  status: "pending" | "executing" | "completed" | "failed" | "cancelled"
+  buyOrder?: {
+    id: string
+    exchange: string
+    pair: string
+    amount: number
+    price: number
+    status: string
+  }
+  sellOrder?: {
+    id: string
+    exchange: string
+    pair: string
+    amount: number
+    price: number
+    status: string
+  }
   actualProfit?: number
-  fees: number
-  error?: string
-  warnings: string[]
-}
-
-export interface OrderResult {
-  orderId: string
-  exchange: string
-  pair: string
-  side: "buy" | "sell"
-  amount: number
-  price: number
-  status: "pending" | "filled" | "partial" | "cancelled" | "failed"
+  fees: {
+    buy: number
+    sell: number
+    network?: number
+  }
+  executionTime: number
   timestamp: string
 }
 
 // ============================================================================
-// CONTRATOS DE MONITORAMENTO E DADOS (Shared)
+// DADOS DE MERCADO
 // ============================================================================
 
 export interface MarketDataRequest {
   exchanges: string[]
   pairs: string[]
-  includeOrderBook: boolean
-  includeVolume: boolean
+  depth?: number
 }
 
 export interface MarketDataResponse {
-  data: Record<string, ExchangeMarketData>
+  data: Record<
+    string,
+    Record<
+      string,
+      {
+        bid: number
+        ask: number
+        volume: number
+        timestamp: string
+      }
+    >
+  >
   timestamp: string
-  latency: Record<string, number>
 }
 
-export interface ExchangeMarketData {
-  exchange: string
-  pairs: Record<string, PairData>
-  status: "online" | "degraded" | "offline"
-  lastUpdate: string
-}
-
-export interface PairData {
-  pair: string
-  bid: number
-  ask: number
-  volume: number
-  change24h: number
-  orderBook?: {
-    bids: [number, number][]
-    asks: [number, number][]
-  }
-}
+// ============================================================================
+// SISTEMA
+// ============================================================================
 
 export interface SystemHealthCheck {
-  botStatus: "running" | "paused" | "stopped" | "error"
+  status: "healthy" | "degraded" | "unhealthy"
   uptime: number
-  mode: "simulation" | "live"
-  exchangeConnections: Record<string, ConnectionStatus>
-  lastScan: string
-  memoryUsage: number
-  cpuUsage: number
-  errors: SystemError[]
+  version: string
+  exchanges: Record<string, ConnectionStatus>
+  performance: {
+    avgResponseTime: number
+    successRate: number
+    errorRate: number
+  }
+  resources: {
+    cpu: number
+    memory: number
+    disk: number
+  }
+  timestamp: string
 }
 
 export interface ConnectionStatus {
-  exchange: string
-  status: "connected" | "disconnected" | "error"
+  connected: boolean
   latency: number
-  lastPing: string
-  errorCount: number
-  lastError?: string
+  lastCheck: string
+  errors: number
 }
 
 export interface SystemError {
   id: string
   level: "info" | "warning" | "error" | "critical"
   message: string
-  component: string
+  source: string
   timestamp: string
-  resolved: boolean
+  details?: any
 }
 
 // ============================================================================
-// CONTRATOS DE NOTIFICAÇÃO (Manus AI Layer)
+// CONFIGURAÇÃO DE EXCHANGES
 // ============================================================================
 
-export interface NotificationConfig {
-  telegram: {
-    enabled: boolean
-    botToken?: string
-    chatId?: string
+export interface ExchangeConfig {
+  id: string
+  name: string
+  type: "CEX" | "DEX"
+  enabled: boolean
+  connected: boolean
+  apiKey?: string
+  apiSecret?: string
+  passphrase?: string
+  testnet?: boolean
+  walletPrivateKey?: string
+  walletAddress?: string
+  rateLimits?: {
+    requests: number
+    window: number
   }
-  email: {
-    enabled: boolean
-    smtpHost?: string
-    smtpPort?: number
-    username?: string
-    password?: string
-    recipients: string[]
-  }
-  discord: {
-    enabled: boolean
-    webhookUrl?: string
-  }
-}
-
-export interface NotificationRequest {
-  type: "info" | "warning" | "error" | "success"
-  title: string
-  message: string
-  priority: "low" | "medium" | "high" | "critical"
-  channels: ("telegram" | "email" | "discord")[]
-  metadata?: Record<string, any>
-}
-
-export interface NotificationResponse {
-  success: boolean
-  sentChannels: string[]
-  failedChannels: string[]
-  errors: string[]
 }
 
 // ============================================================================
-// EVENTOS WEBSOCKET PARA TEMPO REAL
+// WEBSOCKET EVENTS
 // ============================================================================
 
 export interface WebSocketEvent {
   type: string
-  timestamp: string
   data: any
+  timestamp: string
 }
 
 export interface OpportunityFoundEvent extends WebSocketEvent {
@@ -242,11 +245,7 @@ export interface OpportunityFoundEvent extends WebSocketEvent {
 
 export interface TradeExecutedEvent extends WebSocketEvent {
   type: "trade_executed"
-  data: {
-    executionId: string
-    opportunity: ArbitrageOpportunity
-    result: ExecutionResponse
-  }
+  data: ExecutionResponse
 }
 
 export interface SystemStatusEvent extends WebSocketEvent {
@@ -268,32 +267,46 @@ export interface ErrorEvent extends WebSocketEvent {
 }
 
 // ============================================================================
-// TIPOS AUXILIARES
+// NOTIFICAÇÕES
 // ============================================================================
 
-export interface APIResponse<T = any> {
-  success: boolean
-  data?: T
-  error?: string
+export interface NotificationRequest {
+  type: "email" | "sms" | "webhook" | "telegram"
+  recipient: string
+  subject?: string
+  message: string
+  priority: "low" | "medium" | "high" | "critical"
+  data?: any
+}
+
+export interface NotificationResponse {
+  id: string
+  status: "sent" | "failed" | "pending"
   timestamp: string
-  requestId: string
 }
 
-export interface PaginatedResponse<T> extends APIResponse<T[]> {
-  pagination: {
-    page: number
-    limit: number
-    total: number
-    totalPages: number
-  }
+// ============================================================================
+// HISTÓRICO E LOGS
+// ============================================================================
+
+export interface Trade {
+  id: string
+  timestamp: string
+  pair: string
+  type: "simple" | "triangular" | "cross-chain"
+  buyExchange: string
+  sellExchange: string
+  amount: number
+  profit: number
+  status: "completed" | "failed" | "partial"
 }
 
-export interface FilterOptions {
-  startDate?: string
-  endDate?: string
-  exchange?: string
-  pair?: string
-  status?: string
-  minProfit?: number
-  maxProfit?: number
+export interface Alert {
+  id: string
+  timestamp: string
+  severity: "info" | "warning" | "error" | "critical"
+  title: string
+  message: string
+  source: string
+  acknowledged?: boolean
 }

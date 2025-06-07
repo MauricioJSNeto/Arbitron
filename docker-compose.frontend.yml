@@ -1,0 +1,16 @@
+version: '3.8'
+
+services:
+  frontend:
+    build: 
+      context: .
+      dockerfile: Dockerfile.frontend
+    ports:
+      - "3000:3000"
+    environment:
+      - NODE_ENV=production
+      - NEXT_PUBLIC_API_URL=http://18.117.109.37:8000
+      - NEXT_PUBLIC_ARBITRAGE_API_URL=http://18.117.109.37:8000
+      - NEXT_PUBLIC_WS_URL=ws://18.117.109.37:8000/ws
+    container_name: arbitron-frontend
+    restart: unless-stopped

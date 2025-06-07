@@ -1,13 +1,13 @@
-// Bot Status Types
+// Core types for the arbitrage bot application
+
 export interface BotStatus {
   status: "running" | "paused" | "stopped"
-  uptime: number // in seconds
-  mode: "live" | "simulation"
-  lastScan: string | null // ISO timestamp
+  uptime: number
+  mode: "simulation" | "live"
+  lastScan: string
   version: string
 }
 
-// Arbitrage Types
 export interface ArbitrageOpportunity {
   id: string
   pair: string
@@ -19,20 +19,20 @@ export interface ArbitrageOpportunity {
   estimatedProfit: number
   timestamp: string
   type: "simple" | "triangular" | "cross-chain"
+  volume?: number
+  confidence?: number
 }
 
-// Exchange Types
 export interface ExchangeStatusData {
   id: string
   name: string
   type: "CEX" | "DEX"
-  status: "online" | "degraded" | "offline"
-  latency: number // in milliseconds
+  status: "online" | "offline" | "degraded"
+  latency: number
   balance: number
-  lastUpdated: string // ISO timestamp
+  lastUpdated: string
 }
 
-// Trade Types
 export interface Trade {
   id: string
   timestamp: string
@@ -45,7 +45,6 @@ export interface Trade {
   status: "completed" | "failed" | "partial"
 }
 
-// Profit Types
 export interface ProfitData {
   totalProfit: number
   roi: number
@@ -54,37 +53,36 @@ export interface ProfitData {
   avgProfit: number
   bestTrade: number
   timeframe: string
-  chartData: { time: string; profit: number }[]
+  chartData: Array<{
+    time: string
+    profit: number
+  }>
 }
 
-// Alert Types
 export interface Alert {
   id: string
   timestamp: string
-  severity: "critical" | "warning" | "info" | "success"
+  severity: "info" | "warning" | "error" | "critical" | "success"
   title: string
   message: string
   source: string
 }
 
-// Exchange Configuration Types
 export interface ExchangeConfig {
   id: string
   name: string
   type: "CEX" | "DEX"
   enabled: boolean
   connected: boolean
-  apiKey?: string
-  apiSecret?: string
-  passphrase?: string // For exchanges like OKX
-  walletPrivateKey?: string // For DEX
-  walletAddress?: string // For DEX
+  apiKey: string
+  apiSecret: string
+  passphrase?: string
   testnet?: boolean
-  lastError?: string
-  permissions?: string[]
+  walletPrivateKey?: string
+  walletAddress?: string
   rateLimits?: {
     requests: number
-    window: number // in seconds
+    window: number
   }
 }
 
@@ -92,6 +90,16 @@ export interface ConnectionTestResult {
   success: boolean
   exchangeName: string
   balance?: number
-  error?: string
   permissions?: string[]
+  error?: string
+}
+
+export interface RiskSettings {
+  maxTradeAmount: number
+  minProfitThreshold: number
+  maxSlippage: number
+  stopLossPercentage: number
+  maxDailyLoss: number
+  enabledExchanges: string[]
+  enabledPairs: string[]
 }
