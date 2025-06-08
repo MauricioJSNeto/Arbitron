@@ -1,0 +1,29 @@
+name: IA Code Review
+
+on:
+  push:
+    paths:
+      - 'reports/**\'
+  workflow_dispatch:
+
+jobs:
+  run-review:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Setup Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.10\'
+
+      - name: Install dependencies
+        run: pip install PyGithub # Remover openai se não for mais usado, adicionar manus_ai_sdk se aplicável
+
+      - name: Run IA Review Script
+        env:
+          # OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }} # Remover se não usar OpenAI
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # Manter se for usar PyGithub para criar PRs
+          MANUS_AI_API_KEY: ${{ secrets.MANUS_AI_API_KEY }} # Adicionar sua chave da Manus.AI aqui
+        run: python apply_ai_fixes.py
