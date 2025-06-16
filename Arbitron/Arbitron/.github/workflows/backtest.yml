@@ -1,0 +1,22 @@
+name: Backtest Diário
+
+on:
+  schedule:
+    - cron: "0 18 * * *"  # Executa diariamente às 15h BRT
+
+jobs:
+  backtest:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set up Python
+        uses: actions/ssetup-python@v4
+        with:
+          python-version: '3.10'
+      - run: pip install -r requirements.txt
+      - run: python -m src.backtesting.engine
+      - name: Upload Results
+        uses: actions/upload-artifact@v3
+        with:
+          name: backtest-results
+          path: reports/backtest_*.csv

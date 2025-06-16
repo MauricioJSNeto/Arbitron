@@ -1,0 +1,14 @@
+# Análise de Dados
+pandas>=2.0.0
+numpy>=1.24.0
+
+# APIs e Coleta
+ccxt==4.1.95
+python-dotenv==1.0.0
+
+# Backtesting
+backtrader==1.9.76.123
+
+# Visualização
+matplotlib>=3.7.0
+seaborn>=0.12.2
