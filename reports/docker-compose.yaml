@@ -1,0 +1,34 @@
+version: '3.8'
+services:
+  arbitrage_bot:
+    build:
+      context: .
+      dockerfile: Dockerfile.dockerfile
+    ports:
+      - "8000:8000"
+      - "8081:8081"
+    environment:
+      - REDIS_URL=redis://redis:6379
+      - POSTGRES_URL=postgresql://user:pass@postgres:5432/db
+    depends_on:
+      - redis
+      - postgres
+    volumes:
+      - historical_data:/app/data
+  redis:
+    image: redis:6
+    ports:
+      - "6379:6379"
+  postgres:
+    image: postgres:13
+    environment:
+      - POSTGRES_USER=user
+      - POSTGRES_PASSWORD=pass
+      - POSTGRES_DB=db
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+volumes:
+  historical_data:
+  postgres_data:
