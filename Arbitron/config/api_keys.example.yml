@@ -1,0 +1,7 @@
+# Template para chaves de API (NÃO COMITAR CHAVES REAIS)
+binance:
+  api_key: "sua_chave_aqui"
+  api_secret: "seu_secreto_aqui"
+
+alpha_vantage:
+  api_key: "sua_chave_aqui"

@@ -1,0 +1,6 @@
+
+# Dados sensíveis (adicionado pelo script)
+.env
+config/api_keys.yml
+data/raw/*
+!data/raw/.gitkeep
