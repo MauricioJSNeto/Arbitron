@@ -19,3 +19,10 @@ database:
   url: postgresql://user:pass@postgres:5432/arbitron_db
 redis:
   url: redis://redis:6379
+
+
+
+risk_management:
+  daily_profit_limit: 100  # Limite de lucro diário em USD
+  daily_loss_limit: 50    # Limite de perda diária em USD
+
