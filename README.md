@@ -1,154 +1,279 @@
-# Arbitron
+# Projeto Arbitron - Implementação de Melhorias
 
-Bem-vindo ao **Arbitron**, um bot avançado de arbitragem de criptomoedas projetado para identificar e executar oportunidades lucrativas em exchanges centralizadas (CEX) e descentralizadas (DEX). Este projeto implementa um motor de arbitragem robusto, com suporte a estratégias simples e triangulares, integração com APIs de exchanges via CCXT, e uma API RESTful para monitoramento e controle.
+## Descrição
 
-## Visão Geral
-
-O bot monitora preços em tempo real, calcula lucros potenciais considerando taxas, e executa trades automaticamente (em modo real ou simulado). Ele é projetado para baixa latência, segurança e extensibilidade, com uma arquitetura modular que suporta CEXs (Binance, Kraken, etc.), DEXs (Uniswap, PancakeSwap, etc.), e futuramente arbitragem cross-chain.
-
-### Funcionalidades
-- **Arbitragem Simples**: Detecta oportunidades entre exchanges para o mesmo par (e.g., BTC/USDT).
-- **Arbitragem Triangular**: Identifica lucros dentro de uma exchange usando três pares (e.g., BTC/ETH, ETH/USDT, USDT/BTC).
-- **Integração com CCXT**: Conexão com múltiplas CEXs para dados de mercado em tempo real.
-- **API RESTful**: Endpoints para escanear oportunidades (`/api/v1/arbitrage/scan`, `/api/v1/arbitrage/scan_triangular`).
-- **Gerenciamento de Risco**: Configuração de limiar mínimo de lucro e taxas de exchanges.
-- **Containerização**: Suporte a Docker e Docker Compose para implantação.
-- **Logging**: Registro detalhado de operações e erros.
-
-### Tecnologias
-- **Linguagem**: Python 3.9
-- **Bibliotecas**: FastAPI, CCXT, Pydantic, Redis, Psycopg2
-- **Containerização**: Docker, Docker Compose
-- **Banco de Dados**: PostgreSQL (persistência), Redis (cache)
-- **Configuração**: YAML
-
-## Estrutura do Projeto
-
-\`\`\`plaintext
-Cripto-bot-arbitragem/
-├── Dockerfile
-├── docker-compose.yml
-├── requirements.txt
-├── scripts/
-│   ├── arbitrage_engine.py        # Lógica principal de arbitragem
-│   ├── connectors/
-│   │   ├── cex.py                # Conector para exchanges CEX
-│   ├── execution/
-│   │   ├── engine.py             # Motor de execução de trades
-├── api/
-│   ├── main.py                   # Aplicação FastAPI
-│   ├── models.py                 # Modelos Pydantic para validação
-├── config/
-│   ├── settings.yaml             # Configurações do bot
-\`\`\`
-
-## Pré-requisitos
-
-- **Docker** e **Docker Compose** instalados
-- Python 3.9 (opcional, se rodar localmente sem Docker)
-- Chaves API de exchanges (opcional, para execução real)
-- Git instalado para clonar o repositório
+Este projeto implementa melhorias significativas no sistema de arbitragem de criptomoedas Arbitron, seguindo as melhores práticas de desenvolvimento de software e organizando o trabalho em áreas especializadas.
 
 ## Instalação
 
-1. **Clone o repositório**:
-   \`\`\`bash
-   git clone https://github.com/MauricioJSNeto/Arbitron.git
-   cd Arbitron
-   \`\`\`
+### Pré-requisitos
 
-2. **Configure as variáveis de ambiente** (se necessário):
-   - Edite `config/settings.yaml` para definir pares, exchanges, e conexões com Redis/PostgreSQL.
-   - Para chaves API, configure-as de forma segura (futuramente via HashiCorp Vault ou variáveis de ambiente).
+- Python 3.8 ou superior
+- pip (gerenciador de pacotes Python)
+- Git
 
-3. **Construa e inicie os contêineres**:
-   \`\`\`bash
-   docker-compose up --build
-   \`\`\`
-   - Isso inicia o bot, Redis, e PostgreSQL.
-   - A API estará disponível em `http://localhost:8000`.
+### Passos de Instalação
 
-4. **Acesse a documentação da API**:
-   - Abra `http://localhost:8000/docs` no navegador para testar os endpoints.
+1. **Clone o repositório:**
+   ```bash
+   git clone https://github.com/seu-usuario/arbitron.git
+   cd arbitron
+   ```
 
-## Uso
+2. **Crie um ambiente virtual:**
+   ```bash
+   python -m venv venv
+   source venv/bin/activate  # Linux/Mac
+   # ou
+   venv\Scripts\activate  # Windows
+   ```
 
-### Executando o Bot
-- O bot inicia automaticamente com `docker-compose up`.
-- Para parar, use `Ctrl+C` ou:
-  \`\`\`bash
-  docker-compose down
-  \`\`\`
-
-### Testando a API
-- **Escanear arbitragem simples**:
-  \`\`\`bash
-  curl -X POST "http://localhost:8000/api/v1/arbitrage/scan" \
-       -H "Content-Type: application/json" \
-       -d '{"pair": "BTC/USDT", "exchanges": ["binance", "kraken"], "min_profit": 0.5}'
-  \`\`\`
-- **Escanear arbitragem triangular**:
-  \`\`\`bash
-  curl -X POST "http://localhost:8000/api/v1/arbitrage/scan_triangular" \
-       -H "Content-Type: application/json" \
-       -d '{"exchange": "binance"}'
-  \`\`\`
-
-### Configurações
-Edite `config/settings.yaml` para ajustar:
-- `min_profit`: Limiar mínimo de lucro (em %).
-- `pairs`: Pares de moedas a monitorar (e.g., BTC/USDT, ETH/USDT).
-- `exchanges`: Exchanges a usar (e.g., binance, kraken).
-- Conexões com banco de dados e Redis.
-
-## Desenvolvimento
-
-### Adicionando Novas Funcionalidades
-- **Novas Exchanges**: Atualize `scripts/connectors/cex.py` para suportar novas CEXs via CCXT.
-- **Arbitragem Cross-Chain**: Implemente em `scripts/arbitrage_engine.py` usando Web3.py e APIs de pontes.
-- **WebSocket**: Adicione suporte em `scripts/connectors/cex.py` para streams de dados em tempo real.
-
-### Executando Localmente (Sem Docker)
-1. Instale dependências:
-   \`\`\`bash
+3. **Instale as dependências:**
+   ```bash
    pip install -r requirements.txt
-   \`\`\`
-2. Inicie a API:
-   \`\`\`bash
-   uvicorn api.main:app --host 0.0.0.0 --port 8000
-   \`\`\`
+   ```
 
-### Testes
-- Adicione testes unitários em um diretório `tests/` (futuro).
-- Execute com:
-  \`\`\`bash
-  pytest
-  \`\`\`
+4. **Configure as variáveis de ambiente:**
+   ```bash
+   cp .env.example .env
+   # Edite o arquivo .env com suas configurações
+   ```
+
+5. **Execute as migrações do banco de dados:**
+   ```bash
+   python src/database/setup.py
+   ```
+
+## Exemplos de Uso
+
+### Exemplo Básico - Detecção de Arbitragem
+
+```python
+from src.arbitrage import ArbitrageEngine
+from src.api_manager import APIManager, BinanceAPI
+from decimal import Decimal
+
+# Configurar APIs
+api_manager = APIManager()
+api_manager.add_exchange('binance', BinanceAPI())
+
+# Configurar motor de arbitragem
+engine = ArbitrageEngine(['binance'], min_profit=Decimal('1.0'))
+
+# Buscar oportunidades
+opportunities = engine.find_opportunities('BTC/USDT')
+
+for opp in opportunities:
+    print(f"Oportunidade: {opp.symbol}")
+    print(f"Comprar em: {opp.exchange_buy} por ${opp.buy_price}")
+    print(f"Vender em: {opp.exchange_sell} por ${opp.sell_price}")
+    print(f"Lucro: {opp.profit_percentage}%")
+```
+
+### Exemplo - Sistema de Notificações
+
+```python
+from src.notifications import NotificationManager, TelegramNotificationProvider
+from src.config import settings
+
+# Configurar notificações
+notification_manager = NotificationManager()
+
+if settings.telegram_bot_token:
+    telegram_provider = TelegramNotificationProvider(
+        settings.telegram_bot_token,
+        settings.telegram_chat_id
+    )
+    notification_manager.add_provider(telegram_provider)
+
+# Enviar alerta de arbitragem
+opportunity_data = {
+    'symbol': 'BTC/USDT',
+    'profit_percentage': 1.5,
+    'exchange_buy': 'binance',
+    'exchange_sell': 'coinbase',
+    'buy_price': 50000.0,
+    'sell_price': 50750.0,
+    'timestamp': '2023-01-01 12:00:00'
+}
+
+notification_manager.send_arbitrage_alert(opportunity_data)
+```
+
+### Exemplo - Painel Web
+
+```python
+# Executar o painel web
+cd arbitron_web_panel
+source venv/bin/activate
+python src/main.py
+
+# Acesse http://localhost:5000 no seu navegador
+```
+
+## Estrutura do Projeto
+
+```
+arbitron_project/
+├── src/                          # Código fonte principal
+│   ├── arbitrage.py             # Motor de arbitragem
+│   ├── api_manager.py           # Gerenciamento de APIs
+│   ├── config.py                # Configurações e segredos
+│   ├── notifications.py         # Sistema de notificações
+│   └── performance.py           # Otimização e caching
+├── tests/                       # Testes automatizados
+│   ├── test_arbitrage.py        # Testes do motor de arbitragem
+│   ├── test_api_manager.py      # Testes das APIs
+│   └── test_integration.py      # Testes de integração
+├── docs/                        # Documentação
+│   ├── cronograma.md            # Cronograma do projeto
+│   ├── cronograma.csv           # Planilha de tarefas
+│   └── sistema_acompanhamento.md # Sistema de acompanhamento
+├── arbitron_web_panel/          # Painel web Flask
+├── config/                      # Arquivos de configuração
+├── .env.example                 # Exemplo de variáveis de ambiente
+├── requirements.txt             # Dependências Python
+├── README.md                    # Este arquivo
+└── CONTRIBUTING.md              # Guia de contribuição
+```
+
+## Configuração
+
+### Variáveis de Ambiente
+
+Copie o arquivo `.env.example` para `.env` e configure as seguintes variáveis:
+
+```bash
+# APIs das exchanges
+BINANCE_API_KEY=sua_chave_binance
+BINANCE_API_SECRET=seu_segredo_binance
+
+# Configurações de arbitragem
+MIN_PROFIT_PERCENTAGE=1.0
+MAX_TRADE_AMOUNT=1000.0
+
+# Notificações Telegram
+TELEGRAM_BOT_TOKEN=seu_token_telegram
+TELEGRAM_CHAT_ID=seu_chat_id
+
+# Configurações de email
+SMTP_SERVER=smtp.gmail.com
+EMAIL_USER=seu_email@gmail.com
+EMAIL_PASSWORD=sua_senha_email
+```
+
+## Testes
+
+### Executar Todos os Testes
+
+```bash
+python -m pytest tests/ -v
+```
+
+### Executar Testes com Cobertura
+
+```bash
+python -m pytest tests/ --cov=src --cov-report=html
+```
+
+### Executar Testes Específicos
+
+```bash
+# Testes de arbitragem
+python -m pytest tests/test_arbitrage.py -v
+
+# Testes de integração
+python -m pytest tests/test_integration.py -v
+```
+
+## Monitoramento e Performance
+
+### Métricas de Performance
+
+O sistema inclui monitoramento automático de performance:
+
+```python
+from src.performance import PerformanceMonitor
+
+monitor = PerformanceMonitor()
+
+# Obter relatório de performance
+report = monitor.get_performance_report()
+print(report)
+```
+
+### Cache
+
+O sistema utiliza cache TTL para otimizar consultas:
+
+```python
+from src.performance import CacheManager
+
+cache = CacheManager()
+
+# Verificar estatísticas do cache
+stats = cache.get_cache_stats()
+print(f"Cache hits: {stats['price_cache']['hits']}")
+```
 
 ## Segurança
-- **Chaves API**: Configure-as com permissões mínimas (leitura/negociação, sem saques).
-- **Segredos**: Use um gerenciador de segredos (e.g., HashiCorp Vault) em produção.
-- **Logs**: Evite registrar informações sensíveis.
-- **2FA**: Planeje integrar autenticação de dois fatores no painel web (futuro).
 
-## Roadmap
-- [ ] Suporte a DEXs (Uniswap, PancakeSwap) via Web3.py
-- [ ] Arbitragem cross-chain com pontes
-- [ ] Servidor WebSocket para dados em tempo real
-- [ ] Painel web com React para monitoramento
-- [ ] Integração com IA/ML para ranking de oportunidades
-- [ ] Backtesting com dados históricos
+### Melhores Práticas Implementadas
+
+1. **Gerenciamento de Segredos:** Todas as chaves API são armazenadas em variáveis de ambiente
+2. **Validação de Entrada:** Uso do Pydantic para validação rigorosa de dados
+3. **Logging de Segurança:** Registro de todas as operações críticas
+4. **Sanitização:** Limpeza de dados de entrada para prevenir ataques
+
+### Auditoria de Segurança
+
+```bash
+# Verificar vulnerabilidades conhecidas
+pip audit
+
+# Análise estática de código
+bandit -r src/
+```
 
 ## Contribuição
-Contribuições são bem-vindas! Siga estas etapas:
-1. Fork o repositório.
-2. Crie uma branch (`git checkout -b feature/nova-funcionalidade`).
-3. Commit suas mudanças (`git commit -m "Adiciona nova funcionalidade"`).
-4. Push para a branch (`git push origin feature/nova-funcionalidade`).
-5. Abra um Pull Request.
+
+Consulte o arquivo [CONTRIBUTING.md](CONTRIBUTING.md) para diretrizes detalhadas sobre como contribuir para o projeto.
 
 ## Licença
-Este projeto está licenciado sob a [MIT License](LICENSE).
 
-## Contato
-Para dúvidas ou sugestões, contate [MauricioJSNeto](https://github.com/MauricioJSNeto).
+Este projeto está licenciado sob a Licença MIT. Consulte o arquivo LICENSE para mais detalhes.
+
+## Suporte
+
+Para suporte técnico ou dúvidas:
+
+1. Abra uma issue no GitHub
+2. Consulte a documentação em `docs/`
+3. Entre em contato com a equipe de desenvolvimento
+
+## Roadmap
+
+### Versão 2.0 (Planejada)
+- [ ] Suporte a mais exchanges
+- [ ] Machine Learning para predição de oportunidades
+- [ ] API REST completa
+- [ ] Dashboard em tempo real
+- [ ] Execução automática de trades
+
+### Versão 1.1 (Em desenvolvimento)
+- [x] Refatoração modular
+- [x] Sistema de notificações
+- [x] Painel web básico
+- [x] Testes automatizados
+- [x] Otimização de performance
+
+## Changelog
+
+### v1.0.0 (Atual)
+- Implementação inicial das melhorias
+- Refatoração completa do código
+- Sistema de notificações
+- Painel web Flask
+- Testes automatizados
+- Documentação completa
+

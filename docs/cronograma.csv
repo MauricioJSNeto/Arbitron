@@ -1,0 +1,19 @@
+Área,Tarefa,Responsável,Início,Fim,Duração (dias),Status,Prioridade
+Documentação,Atualizar README.md,Analista de Documentação,Dia 1,Dia 2,2,Pendente,Alta
+Documentação,Criar CONTRIBUTING.md,Analista de Documentação,Dia 3,Dia 4,2,Pendente,Alta
+Documentação,Documentação técnica adicional,Analista de Documentação,Dia 5,Dia 7,3,Pendente,Média
+Segurança,Implementar gerenciamento de segredos,Especialista em Segurança,Dia 8,Dia 9,2,Pendente,Alta
+Segurança,Validação de entrada,Especialista em Segurança,Dia 10,Dia 12,3,Pendente,Alta
+Segurança,Auditoria de segurança,Especialista em Segurança,Dia 13,Dia 14,2,Pendente,Média
+Desenvolvimento,Refatoração do código,Desenvolvedor Backend,Dia 15,Dia 16,2,Pendente,Alta
+Desenvolvimento,Type Hints e documentação,Desenvolvedor Backend,Dia 17,Dia 18,2,Pendente,Média
+Performance,Otimização de performance,Engenheiro de Performance,Dia 19,Dia 21,3,Pendente,Alta
+Testes,Testes unitários,Engenheiro de QA,Dia 22,Dia 24,3,Pendente,Alta
+Testes,Testes de integração,Engenheiro de QA,Dia 25,Dia 26,2,Pendente,Alta
+Testes,Testes de performance,Engenheiro de Performance,Dia 27,Dia 28,2,Pendente,Média
+Interface,Desenvolvimento do painel web,Desenvolvedor Frontend,Dia 29,Dia 31,3,Pendente,Alta
+Interface,Sistema de notificações,Desenvolvedor Backend,Dia 32,Dia 33,2,Pendente,Alta
+Interface,Testes de interface,Engenheiro de QA,Dia 34,Dia 35,2,Pendente,Média
+Finalização,Testes finais,Engenheiro de QA,Dia 36,Dia 37,2,Pendente,Alta
+Finalização,Preparação para produção,Desenvolvedor Backend,Dia 38,Dia 39,2,Pendente,Alta
+Finalização,Deploy e monitoramento,Gerente de Projeto,Dia 40,Dia 42,3,Pendente,Alta
